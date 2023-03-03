@@ -20,7 +20,6 @@ public class ContentItem {
     public int getCid() {
         return this.cid;
     }
-
     public void setCid(int cid) {
         this.cid = cid;
     }
@@ -28,13 +27,22 @@ public class ContentItem {
     public int getSize() {
         return this.size;
     }
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     public String getHeader() {
         return this.header;
     }
+    public void setHeader(String header) {
+        this.header = header;
+    }
 
     public String getContent() {
         return this.content;
+    }
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override

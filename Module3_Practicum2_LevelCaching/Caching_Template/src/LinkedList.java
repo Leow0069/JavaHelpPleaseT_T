@@ -45,6 +45,7 @@ public class LinkedList<E> {
             // next pointer in the new node. The new Node is then set
             // as the new head of the Linked list
             this.head = new Node(e, this.head);
+        this.numItems++;
     }
 
     /**
@@ -62,6 +63,7 @@ public class LinkedList<E> {
             // assign head to next node so first head node gets dumped
             this.head = curr.getNext();
             // return dumped data to track the size that will be available once again
+            this.numItems--;
             return curr.getData();
         }
         return null;
@@ -87,12 +89,14 @@ public class LinkedList<E> {
                 if (prev == null){
                     // if theres only one node, prev will still be null, so need to specifically assign head to null to avoid null pointer exception
                     this.head = null;
+                    this.numItems--;
                     // return dumped data to track the size that will be available once again
                     return curr.getData();
                 }
                 // if curr.next is null, dump curr
                 prev.setNext(null);
                 // return dumped data to track the size that will be available once again
+                this.numItems--;
                 return curr.getData();
                 // Node has been removed, loop exited
             }
