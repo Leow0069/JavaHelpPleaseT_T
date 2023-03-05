@@ -10,6 +10,7 @@ public class Cache {
 
     // Constructor ------------------------
     // YOUR CODE HERE
+    //---------------------------------------------------------------------
     Cache () {
         //default 3 cache lists
         this.numCaches = 3;
@@ -18,7 +19,6 @@ public class Cache {
         for (int i=0; i<this.numCaches; i++) {
             caches[i] = new CacheList(200);
         }
-
     }
 
     Cache (int numCaches) {
@@ -26,7 +26,7 @@ public class Cache {
             numCaches = 2;
         }
         this.numCaches = numCaches;
-        //user specified cache lists
+        // loop to create cachelists
        this.caches = new CacheList[numCaches];
         for (int i=0; i<this.numCaches; i++) {
             caches[i] = new CacheList(200);
@@ -53,6 +53,11 @@ public class Cache {
      */
     public String clear() {
         // YOUR CODE HERE
+        //---------------------------------------------------------------------
+        for (int i=0; i<this.numCaches; i++) {
+            caches[i].clear();
+        }
+        //-------------------------------END-----------------------------------
 
         return "Cache cleared!";
     }
@@ -66,8 +71,48 @@ public class Cache {
      */
     private int hashFunction(String contentHeader) {
         // YOUR CODE HERE
-        header.
+//        int h(String contentHeader, int M) {
+            char ch[];
+            ch = contentHeader.toCharArray();
+//            int xlength = contentHeader.length();
+
+            int i, sum;
+            for (sum=0, i=0; i < contentHeader.length(); i++)
+                sum += ch[i];
+//            if (sum < 1000) {
+                return sum % this.numCaches;
+//            } else {
+//                // Use folding on a string, summed 4 bytes at a time
+////                long sfold(String s, int M) {
+//                    int intLength = contentHeader.length() / 4;
+//                    long sum = 0;
+//                    for (int j = 0; j < intLength; j++) {
+//                        char c[] = contentHeader.substring(j * 4, (j * 4) + 4).toCharArray();
+//                        long mult = 1;
+//                        for (int k = 0; k < c.length; k++) {
+//                            sum += c[k] * mult;
+//                            mult *= 256;
+//                        }
+//                    }
+//
+//                    char c[] = contentHeader.substring(intLength * 4).toCharArray();
+//                    long mult = 1;
+//                    for (int k = 0; k < c.length; k++) {
+//                        sum += c[k] * mult;
+//                        mult *= 256;
+//                    }
+//
+//                    return(Math.abs(sum) % this.numCaches);
+//                }
+//            }
+//        header.
     }
+//      ORIGINAL
+//    private int hashFunction(String contentHeader) {
+//        // YOUR CODE HERE
+//
+//        header.
+//    }
 
     /**
      * Adds a ContentItem object into the cache, along with the eviction policy.
@@ -79,9 +124,15 @@ public class Cache {
     public String insert(ContentItem content, String evictionPolicy) {
 
         // YOUR CODE HERE
+        //---------------------------------------------------------------------
+        int hash = hashFunction(content.getHeader());
 
+        String result = caches[hash].put(content, evictionPolicy);
         if // YOUR CODE HERE
+        //---------------------------------------------------------------------
+        (result == null) {
             return String.format("INSERTED: %s", content);
+        }
         else
             return result;
     }
@@ -93,8 +144,15 @@ public class Cache {
      */
     public Object retrieveContent(ContentItem content) {
         // YOUR CODE HERE
+        //---------------------------------------------------------------------
 
+        // check cache based on input content's header, get the contentItem,
+        Object result = caches[hashFunction(content.getHeader())].find(content.getCid());
+
+        // if content item exist, update retreive content
         if // YOUR CODE HERE
+        //---------------------------------------------------------------------
+        (result != null)
             return content;
         else
             return "Cache miss";
@@ -106,12 +164,16 @@ public class Cache {
      * @param content - ContentItem object
      * @return String message on the status of the update.
      */
-    public String updateContent(ContentItem content) {
-        // YOUR CODE HERE
-
-        if // YOUR CODE HERE
-            return String.format("UPDATED: %s", content);
-        else
-            return "Cache miss";
-    }
+//    public String updateContent(ContentItem content) {
+//        // YOUR CODE HERE
+//        //---------------------------------------------------------------------
+//
+//
+//        if // YOUR CODE HERE
+//        //---------------------------------------------------------------------
+//
+//        return String.format("UPDATED: %s", content);
+//        else
+//            return "Cache miss";
+//    }
 }

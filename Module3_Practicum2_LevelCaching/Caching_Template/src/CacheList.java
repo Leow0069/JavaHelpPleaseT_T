@@ -40,40 +40,43 @@ public class CacheList extends LinkedList<ContentItem>{
         // YOUR CODE HERE
         //---------------------------------------------------------------------
         // check maximum size here
-        if (maxSize < content.getSize()) {
-            return "content size is bigger than remaining";
-        } else if (content.getSize() <= 0){
-            return "content size must be bigger than 0";
-        } else {
-            if (this.getHead() == null) {
-                // if there is no head Node, set this to the head Node
-                this.addToHead(content);
-                remainingSize -= content.getSize();
+        if (content != null) {
+            if (maxSize < content.getSize()) {
+                return "content size is bigger than remaining";
+            } else if (content.getSize() <= 0) {
+                return "content size must be bigger than 0";
             } else {
-                // if there is existing nodes, content exists
-                if (findOnly(content.getCid()) != null) {
-                    // detach and push to head
-                    return "duplicate item found";
-                    // content doesnt exists
-                } else {
-                    // need to create the new node
-                    // first check if remaining size >= content.size, create new node an add as head
-
-                    while (remainingSize < content.getSize()) {
-                        if (evictionPolicy.equalsIgnoreCase("lru")) {
-                            this.lruEvict();
-                        } else if (evictionPolicy.equalsIgnoreCase("mru")) {
-                            this.mruEvict();
-                        } else {
-                            return "please state lru or mru for evicion policy";
-                        }
-                    }
+                if (this.getHead() == null) {
+                    // if there is no head Node, set this to the head Node
                     this.addToHead(content);
                     remainingSize -= content.getSize();
-                    return null;
+                } else {
+                    // if there is existing nodes, content exists
+                    if (findOnly(content.getCid()) != null) {
+                        // detach and push to head
+                        return "duplicate item found";
+                        // content doesnt exists
+                    } else {
+                        // need to create the new node
+                        // first check if remaining size >= content.size, create new node an add as head
+
+                        while (remainingSize < content.getSize()) {
+                            if (evictionPolicy.equalsIgnoreCase("lru")) {
+                                this.lruEvict();
+                            } else if (evictionPolicy.equalsIgnoreCase("mru")) {
+                                this.mruEvict();
+                            } else {
+                                return "please state lru or mru for evicion policy";
+                            }
+                        }
+                        this.addToHead(content);
+                        remainingSize -= content.getSize();
+                        return null;
+                    }
                 }
             }
-        } return null;
+            return null;
+        } return "Content cannot be null";
     }
 
     /**
@@ -92,16 +95,21 @@ public class CacheList extends LinkedList<ContentItem>{
         while (curr != null) {
             // search through for matching content id
             if (curr.getData().getCid() == cid) {
-                if (curr.getNext() != null) {
-                    // set found item as head
-                    prev.setNext(curr.getNext());
-                    curr.setNext(this.getHead());
-                    this.setHead(curr);
-
+                if (prev == null) {
                     return curr.getData();
-                // if found match but only 1 item,
                 } else {
-                    return curr.getData();
+                    if (curr.getNext() != null) {
+                        prev.setNext(curr.getNext());
+                        curr.setNext(this.getHead());
+                        this.setHead(curr);
+                        return curr.getData();
+
+                    } else {
+                        curr.setNext(this.getHead());
+                        this.setHead(curr);
+                        prev.setNext(null);
+                        return curr.getData();
+                    }
                 }
             }
             prev = curr;
@@ -142,13 +150,11 @@ public class CacheList extends LinkedList<ContentItem>{
         //---------------------------------------------------------------------
         // find item in list and push to head using search function
         ContentItem originalContent = this.find(cid);
-        if (originalContent != null) {
-            //replace content data
-            originalContent.setContent(content.getContent());
-            return true;
-        } else {
-            return null;
-        }
+            if (originalContent != null && content != null) {
+                //replace content data
+                originalContent.setContent(content.getContent());
+                return true;
+            } return null;
     }
 
     /**
@@ -179,8 +185,7 @@ public class CacheList extends LinkedList<ContentItem>{
         // TODO to double check!
         Node<ContentItem> node = new Node<>(null,null);
         this.setHead(node);
-
+        this.setNumItems(0);
         this.remainingSize = this.maxSize;
-        System.out.println("cache cleared");
     }
 }

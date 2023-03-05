@@ -20,15 +20,9 @@ public class ContentItem {
     public int getCid() {
         return this.cid;
     }
-    public void setCid(int cid) {
-        this.cid = cid;
-    }
 
     public int getSize() {
         return this.size;
-    }
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public String getHeader() {

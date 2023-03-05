@@ -24,6 +24,10 @@ public class LinkedList<E> {
         return this.numItems;
     }
 
+    public void setNumItems(int numItems) {
+        this.numItems = numItems;
+    }
+
     // ----------------------- Accessor methods END ------------------------
     public boolean isEmpty() {
         return this.numItems == 0;
